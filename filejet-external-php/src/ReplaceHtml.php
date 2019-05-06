@@ -79,10 +79,39 @@ class ReplaceHtml
             
             $height = $this->getHeight($image);
             $width = $this->getWidth($image);
+            $ratio = $width !== null && $height !== null ? $this->getAspectRatio((int) $width, (int) $height) : null;
 
             $customMutations = false === empty($imageClasses) ? array_intersect_key($mutations, array_flip($imageClasses)) : [];
-            $image->setAttribute('src', $this->mutateImage($this->prefixImageSource($originalSource), $height, $width, $fill, $customMutations));
+            $prefixedSource = $this->prefixImageSource($originalSource);
+            $image->setAttribute('src', $this->mutateImage($prefixedSource, $height, $width, $fill, $customMutations));
+
+            $srcSet = $image->getAttribute('srcset');
+            if(empty($srcSet)) {
+                continue;
+            }
+
+            $sources = explode(', ', $srcSet);
+            $newSources = [];
+
+            foreach($sources as $source) {
+                list($url, $w) = explode(' ', $source);
+                $widthAsInt = (int) $w;
+                $customMutation = "resize_$widthAsInt";
+                if($ratio !== null) {
+                    $h = round($widthAsInt / $ratio);
+                    $customMutation .= "x$h";
+                }
+                $newUrl = $this->mutateImage($prefixedSource, null, null, false, array_merge($customMutations, [$customMutation]));
+                $newSources[] = "$newUrl $w";
+
+            }
+            
+            $image->setAttribute('srcset', implode(', ', $newSources));
         }
+    }
+
+    public function getAspectRatio(int $width, int $height): float {
+        return $width > $height ? ($width / $height) : ($height / $width);
     }
 
     public function mutateImage(string $source, string $height=null, string $width=null, bool $fill=false, array $customMutations = []): string
@@ -90,7 +119,7 @@ class ReplaceHtml
         $mutation = 'auto';
 
         if(false === empty($customMutations)) {
-            $mutation = implode(',', $customMutations);
+            $mutation = implode(',', array_merge($customMutations, ['auto']));
         } else if (!empty($height) && empty($width)) {
             $mutation = "resize_x".$height."shrink,".$mutation;
         } else if (empty($height) && !empty($width)) {
