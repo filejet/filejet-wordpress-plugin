@@ -32,9 +32,6 @@ class Filejet
         self::$initiated = true;
         add_filter('wp_enqueue_scripts', array('Filejet', 'add_theme_scripts'), 0);
         add_filter('wp_head', array('Filejet', 'add_theme_style'), 100);
-        add_filter('post_thumbnail_html', array('Filejet', 'content_filter'), 10);
-        add_filter('the_content', array('Filejet', 'content_filter'), 10);
-        add_filter('the_excerpt', array('Filejet', 'excerpt_filter'), 10);
     }
 
 
@@ -222,5 +219,16 @@ class Filejet
 
     }
 
-
+    public static function is_rest() 
+    {
+        $prefix = rest_get_url_prefix( );
+        if (defined('REST_REQUEST') && REST_REQUEST
+            || isset($_GET['rest_route'])
+                && strpos( trim( $_GET['rest_route'], '\\/' ), $prefix , 0 ) === 0)
+            return true;
+    
+        $rest_url = wp_parse_url( site_url( $prefix ) );
+        $current_url = wp_parse_url( add_query_arg( array( ) ) );
+        return strpos( $current_url['path'], $rest_url['path'], 0 ) === 0;
+    }
 }
