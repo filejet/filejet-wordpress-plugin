@@ -63,6 +63,11 @@ No. You won't loose any of your images after stopping the FileJet Pro plugin. We
 
 == Changelog ==
 
+= 1.1 =
+* Added support for src-set
+* Optimize images for the whole output not just content of the post
+* Various bug fixes
+
 = 1.0 =
 * Initial version of the plugin.
 
