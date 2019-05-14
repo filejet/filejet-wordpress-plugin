@@ -1,7 +1,7 @@
 === FileJet Pro ===
 Contributors: filejet
 Tags: image optimization, webp, smart cdn, filejet 
-Requires at least: 4.3
+Requires at least: 4.0
 Tested up to: 5.2
 Requires PHP: 7.0
 Stable tag: 1.1
