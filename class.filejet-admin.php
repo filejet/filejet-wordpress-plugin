@@ -143,18 +143,18 @@ class Filejet_Admin
     public static function load_resources()
     {
         global $hook_suffix;
+        $isSettingPage = preg_match('/settings_page_(.*)\/filejet/', $hook_suffix) !== false;
 
         if (in_array(
             $hook_suffix, apply_filters(
                 'Filejet_Admin_page_hook_suffixes', array(
                 'index.php', // dashboard
-                'settings_page_filejet-wordpress-plugin/filejet',
                 'plugins.php',
                 'upload.php',
                 'options-general.php'
                 )
             ), true
-        )
+        ) || $isSettingPage
         ) {
             wp_register_style('filejet.css', plugin_dir_url(__FILE__) . 'assets/filejet.css', array(), FILEJET_VERSION);
             wp_enqueue_style('filejet.css');

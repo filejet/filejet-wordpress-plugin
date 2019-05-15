@@ -1,6 +1,6 @@
 <?php
 
-require './vendor/filejet/filejet-external-php/src/ReplaceHtml.php';
+require __DIR__ . '/vendor/filejet/filejet-external-php/src/ReplaceHtml.php';
 
 class Filejet
 {
