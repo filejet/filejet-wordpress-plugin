@@ -1,0 +1,14 @@
+{
+  "name": "filejet/filejet-wordpress-plugin",
+  "description": "FileJet integration for Wordpress",
+  "license": "MIT",
+  "type": "library",
+  "require": {
+    "php": "^7.0",
+    "filejet/filejet-external-php": "dev-wordpress"
+  },
+  "require-dev": {
+    "squizlabs/php_codesniffer": "3.*"
+  },
+  "minimum-stability": "dev"
+}

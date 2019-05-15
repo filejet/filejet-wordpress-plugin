@@ -24,7 +24,7 @@
 
 .filejet-alert.filejet-active {
 	/*background-color: #649316;*/
-	background-image: url(./images/header.jpg);
+	background-image: url(images/header.jpg);
 	background-size: cover;
 }
 
@@ -120,7 +120,7 @@
 	min-width: 825px;
 	border: 1px solidrgb(133, 98, 238);
 	margin: 15px 0;
-	background-image: url(./images/header.jpg);
+	background-image: url(images/header.jpg);
 	background-size: cover;
 	background-position: center;
 	-moz-border-radius: 3px;

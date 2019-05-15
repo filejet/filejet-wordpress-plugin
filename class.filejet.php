@@ -1,5 +1,6 @@
 <?php
-require('filejet-external-php/src/ReplaceHtml.php');
+
+require('./vendor/filejet/filejet-external-php/src/ReplaceHtml.php');
 
 class Filejet
 {
@@ -123,7 +124,7 @@ class Filejet
 
     public static function content_filter($content)
     {
-        return self::$filejetHandler->replaceImages($content);
+        return self::$filejetHandler->replaceImages($content, \Filejet::get_ignored(), \Filejet::get_mutations());
     }
 
 
@@ -146,7 +147,7 @@ class Filejet
 
     public static function excerpt_filter($content)
     {
-        return self::$filejetHandler->replaceImages($content);
+        return self::$filejetHandler->replaceImages($content, \Filejet::get_ignored(), \Filejet::get_mutations());
     }
 
 
@@ -218,16 +219,16 @@ class Filejet
 
     }
 
-    public static function is_rest() 
+    public static function is_rest()
     {
-        $prefix = rest_get_url_prefix( );
+        $prefix = rest_get_url_prefix();
         if (defined('REST_REQUEST') && REST_REQUEST
             || isset($_GET['rest_route'])
-                && strpos( trim( $_GET['rest_route'], '\\/' ), $prefix , 0 ) === 0)
+            && strpos(trim($_GET['rest_route'], '\\/'), $prefix, 0) === 0)
             return true;
-    
-        $rest_url = wp_parse_url( site_url( $prefix ) );
-        $current_url = wp_parse_url( add_query_arg( array( ) ) );
-        return strpos( $current_url['path'], $rest_url['path'], 0 ) === 0;
+
+        $rest_url = wp_parse_url(site_url($prefix));
+        $current_url = wp_parse_url(add_query_arg(array()));
+        return strpos($current_url['path'], $rest_url['path'], 0) === 0;
     }
 }
