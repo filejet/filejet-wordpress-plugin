@@ -1,7 +1,6 @@
 <?php
 require('filejet-external-php/src/ReplaceHtml.php');
 
-
 class Filejet
 {
     private static $initiated = false;

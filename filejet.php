@@ -25,6 +25,10 @@ define('FILEJET_VERSION', '1.1');
 define('FILEJET__MINIMUM_WP_VERSION', '4.0');
 define('FILEJET__PLUGIN_DIR', plugin_dir_path(__FILE__));
 
+if (!defined('FILEJET_PLUGIN_BASENAME')) {
+    define('FILEJET_PLUGIN_BASENAME', plugin_basename(__FILE__));
+}
+
 register_activation_hook(__FILE__, array('Filejet', 'plugin_activation'));
 register_deactivation_hook(__FILE__, array('Filejet', 'plugin_deactivation'));
 

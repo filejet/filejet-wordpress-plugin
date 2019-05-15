@@ -50,10 +50,10 @@
                     <p>
                         <?php
                         global $wp;
-                        $redirect = admin_url() . 'admin.php?page=filejet-config';
+                        $redirect = admin_url() . 'admin.php?page=' . FILEJET_PLUGIN_BASENAME;
                         ?>
                         <br>
-                        <a href="https://app.filejet.io/auth/sign-up?redirect_url=<?= esc_url($redirect) ?>" target="_blank" class="fj_button">Register now</a>
+                        <a href="https://app.filejet.io/auth/sign-up?redirect_url=<?= urlencode($redirect) ?>" target="_blank" class="fj_button">Register now</a>
                     </p>
                 </div>
 			<?php } else { ?>
