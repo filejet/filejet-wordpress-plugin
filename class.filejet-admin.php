@@ -41,10 +41,20 @@ class Filejet_Admin {
 		add_action( 'admin_menu', array( 'Filejet_Admin', 'admin_menu' ) );
 		add_action( 'admin_notices', array( 'Filejet_Admin', 'display_notice' ) );
 		add_action( 'admin_enqueue_scripts', array( 'Filejet_Admin', 'load_resources' ) );
-		add_filter( 'all_plugins', array( 'Filejet_Admin', 'modify_plugin_description' ) );
-	}
+        add_action ('after_setup_theme', 'myplugin_after_setup_theme');
+        add_filter( 'all_plugins', array( 'Filejet_Admin', 'modify_plugin_description' ) );
+        add_filter('plugin_action_links_' . FILEJET_PLUGIN_BASENAME, array('Filejet_Admin', 'addPluginActionLinks'));
+    }
 
-	public static function admin_init() {
+    function addPluginActionLinks($action_links) {
+        $settings_link = '<a href="options-general.php?page=' . FILEJET_PLUGIN_BASENAME . '">' . __('Settings', FILEJET_PLUGIN_BASENAME) . '</a>';
+        array_unshift($action_links, $settings_link);
+
+        return $action_links;
+    }
+
+
+    public static function admin_init() {
 		load_plugin_textdomain( 'filejet' );
 	}
 
@@ -80,21 +90,7 @@ class Filejet_Admin {
 	}
 
 	public static function admin_menu() {
-        $page_title = __('FileJet Pro', 'filejet');
-        $menu_title = __('FileJet Pro', 'filejet');
-        $capability = 'manage_options';
-        $menu_slug  = 'filejet-config';
-        $function   = ['Filejet_Admin', 'display_page'];
-        $icon_url   = esc_url( plugins_url( 'assets/images/filejet-16x16.png', __FILE__ ) );
-        $position   = 4;
-
-        add_menu_page( $page_title,
-            $menu_title,
-            $capability,
-            $menu_slug,
-            $function,
-            $icon_url,
-            $position );
+        add_options_page('FileJet Pro', 'FileJet Pro', 'manage_options', FILEJET_PLUGIN_BASENAME, ['Filejet_Admin', 'display_page']);
 
 	}
 
@@ -109,12 +105,12 @@ class Filejet_Admin {
   		return $links; 
 	}
 
-	public static function get_page_url( $page = 'filejet-config' ) {
+	public static function get_page_url( $page = FILEJET_PLUGIN_BASENAME ) {
 
         return add_query_arg( ['page' => $page], admin_url( 'admin.php' ));
 	}
 
-	public static function get_page_url_with_tab($tab = self::TAB_CONFIGURATION, $page = 'filejet-config') {
+	public static function get_page_url_with_tab($tab = self::TAB_CONFIGURATION, $page = FILEJET_PLUGIN_BASENAME) {
         return add_query_arg( ['page' => $page, 'tab' => $tab], admin_url( 'admin.php' ));
 	}
 
@@ -135,9 +131,10 @@ class Filejet_Admin {
 
 		if (in_array($hook_suffix, apply_filters('Filejet_Admin_page_hook_suffixes', array(
             'index.php', # dashboard
-            'toplevel_page_filejet-config',
+            'settings_page_filejet-wordpress-plugin/filejet',
             'plugins.php',
             'upload.php',
+            'options-general.php'
         )), true)) {
 			wp_register_style( 'filejet.css', plugin_dir_url( __FILE__ ) . 'assets/filejet.css', array(), FILEJET_VERSION );
 			wp_enqueue_style( 'filejet.css');
