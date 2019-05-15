@@ -1,6 +1,6 @@
 <?php
 
-require('./vendor/filejet/filejet-external-php/src/ReplaceHtml.php');
+require './vendor/filejet/filejet-external-php/src/ReplaceHtml.php';
 
 class Filejet
 {
@@ -58,7 +58,7 @@ class Filejet
 
         load_plugin_textdomain('filejet');
         $file = FILEJET__PLUGIN_DIR . 'assets/views/' . $name . '.php';
-        include($file);
+        include $file;
     }
 
 
@@ -198,6 +198,7 @@ class Filejet
 
     /**
      * Attached to activate_{ plugin_basename( __FILES__ ) } by register_activation_hook()
+     *
      * @static
      */
 
@@ -212,6 +213,7 @@ class Filejet
 
     /**
      * Removes all connection options
+     *
      * @static
      */
     public static function plugin_deactivation()
@@ -224,8 +226,10 @@ class Filejet
         $prefix = rest_get_url_prefix();
         if (defined('REST_REQUEST') && REST_REQUEST
             || isset($_GET['rest_route'])
-            && strpos(trim($_GET['rest_route'], '\\/'), $prefix, 0) === 0)
+            && strpos(trim($_GET['rest_route'], '\\/'), $prefix, 0) === 0
+        ) {
             return true;
+        }
 
         $rest_url = wp_parse_url(site_url($prefix));
         $current_url = wp_parse_url(add_query_arg(array()));
