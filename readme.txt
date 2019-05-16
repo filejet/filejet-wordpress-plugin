@@ -63,6 +63,11 @@ No. You won't loose any of your images after stopping the FileJet Pro plugin. We
 
 == Changelog ==
 
+= 1.2 =
+* Improve settings UX
+* Disable image replacement when credentials missing
+* Introduce composer for external dependencies
+
 = 1.1 =
 * Added support for src-set
 * Optimize images for the whole output not just content of the post
