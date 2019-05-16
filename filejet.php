@@ -51,7 +51,7 @@ if (is_admin()) {
 require_once FILEJET__PLUGIN_DIR . 'class.filejet.php';
 add_action('init', array('Filejet', 'init'));
 
-if (!is_admin() && !Filejet::is_rest()) {
+if (!is_admin() && !Filejet::is_rest() && Filejet::get_api_key()) {
     add_action('wp_loaded', 'buffer_start');
     add_action('shutdown', 'buffer_end');
 }
