@@ -34,12 +34,16 @@ register_deactivation_hook(__FILE__, array('Filejet', 'plugin_deactivation'));
 
 function buffer_start()
 {
-    ob_start(['Filejet', 'content_filter']);
+    if (!is_admin() && !Filejet::is_rest() && Filejet::get_api_key()) {
+        ob_start(['Filejet', 'content_filter']);
+    }
 }
 
 function buffer_end()
 {
-    ob_end_flush();
+    if (!is_admin() && !Filejet::is_rest() && Filejet::get_api_key()) {
+        ob_end_flush();
+    }
 }
 
 if (is_admin()) {
@@ -51,7 +55,5 @@ if (is_admin()) {
 require_once FILEJET__PLUGIN_DIR . 'class.filejet.php';
 add_action('init', array('Filejet', 'init'));
 
-if (!is_admin() && !Filejet::is_rest() && Filejet::get_api_key()) {
-    add_action('wp_loaded', 'buffer_start');
-    add_action('shutdown', 'buffer_end');
-}
+add_action('wp_loaded', 'buffer_start');
+add_action('shutdown', 'buffer_end');
