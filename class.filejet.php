@@ -223,16 +223,12 @@ class Filejet
 
     public static function is_rest()
     {
-        $prefix = rest_get_url_prefix();
-        if (defined('REST_REQUEST') && REST_REQUEST
-            || isset($_GET['rest_route'])
-            && strpos(trim($_GET['rest_route'], '\\/'), $prefix, 0) === 0
-        ) {
-            return true;
-        }
+        if (!function_exists('rest_url') || empty($_SERVER['REQUEST_URI'])) return false;
 
-        $rest_url = wp_parse_url(site_url($prefix));
-        $current_url = wp_parse_url(add_query_arg(array()));
-        return strpos($current_url['path'], $rest_url['path'], 0) === 0;
+        $sRestUrlBase = get_rest_url(get_current_blog_id(), '/');
+        $sRestPath = trim(parse_url($sRestUrlBase, PHP_URL_PATH), '/');
+        $sRequestPath = trim($_SERVER['REQUEST_URI'], '/');
+
+        return (strpos($sRequestPath, $sRestPath) === 0);
     }
 }
