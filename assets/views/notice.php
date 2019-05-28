@@ -25,4 +25,7 @@
 	<h3 class="filejet-key-status"><?php esc_html_e("FileJet setup and running.", 'filejet'); ?></h3>
 	<p class="filejet-description"><?php printf( __('Check your savings on the stats page.', 'filejet')); ?></p>
 </div>
+<div class="filejet-alert filejet-success">
+    <h3><span class="dashicons dashicons-yes"></span> Your storage ID : <?= Filejet::get_storage_id() ?></h3>
+</div>
 <?php  endif;?>
