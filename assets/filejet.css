@@ -22,6 +22,15 @@
 	background-color: #993300;
 }
 
+.filejet-alert.filejet-success {
+	background-color: #369854;
+}
+
+.filejet-alert.filejet-success h3 {
+	color: #fff;
+	padding-top: 1em;
+}
+
 .filejet-alert.filejet-active {
 	/*background-color: #649316;*/
 	background-image: url(images/header.jpg);
