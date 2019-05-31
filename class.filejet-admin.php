@@ -7,6 +7,7 @@ class Filejet_Admin
 
     const TAB_CONFIGURATION = 'configuration';
     const TAB_MUTATIONS = 'mutations';
+    const TAB_LAZY_LOAD = 'lazy_load';
 
     private static $initiated = false;
     private static $notices = array();
@@ -28,11 +29,17 @@ class Filejet_Admin
             case Filejet_Action::ADD_IGNORE_SETTING:
                 self::add_ignore_setting();
                 break;
+            case Filejet_Action::ADD_LAZY_LOAD_SETTING:
+                self::add_lazy_load_setting();
+                break;
             case Filejet_Action::DELETE_MUTATION_SETTING:
                 self::delete_setting(Filejet::CONFIG_MUTATIONS);
                 break;
             case Filejet_Action::DELETE_IGNORE_SETTING:
                 self::delete_setting(Filejet::CONFIG_IGNORED);
+                break;
+            case Filejet_Action::DELETE_LAZY_LOAD_SETTING:
+                self::delete_setting(Filejet::CONFIG_LAZY_LOAD);
                 break;
         }
     }
@@ -133,7 +140,8 @@ class Filejet_Admin
             $tab,
             [
                 self::TAB_CONFIGURATION,
-                self::TAB_MUTATIONS
+                self::TAB_MUTATIONS,
+                self::TAB_LAZY_LOAD,
             ],
             true
         );
@@ -251,6 +259,39 @@ class Filejet_Admin
         if (!empty($class)) {
             $config[$class] = $class;
             $config_current[Filejet::CONFIG_IGNORED] = $config;
+            update_option('filejet_config', json_encode($config_current));
+        }
+
+        return true;
+    }
+
+    public static function add_lazy_load_setting()
+    {
+        if (!current_user_can('manage_options')) {
+            die(__('Cheatin&#8217; uh?', 'Filejet'));
+        }
+
+        if (!wp_verify_nonce($_POST['_wpnonce'], self::NONCE)) {
+            return false;
+        }
+
+        $src = preg_replace('/[^a-z0-9-_]/i', '', $_POST['src']);
+        $srcset = preg_replace('/[^a-z0-9-_]/i', '', $_POST['srcset']);
+
+        if(!$src || $src === 'src' || $srcset === 'srcset') {
+            return false;
+        }
+
+
+        $config = [];
+
+        $config_current = Filejet::get_config();
+        $config = array_merge($config, $config_current[Filejet::CONFIG_LAZY_LOAD] ?? []);
+
+
+        if (!empty($src)) {
+            $config[$src] = $srcset;
+            $config_current[Filejet::CONFIG_LAZY_LOAD] = $config;
             update_option('filejet_config', json_encode($config_current));
         }
 

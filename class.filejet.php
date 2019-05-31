@@ -9,10 +9,12 @@ class Filejet
 
     const CONFIG_MUTATIONS = 'mutations';
     const CONFIG_IGNORED = 'ignored';
+    const CONFIG_LAZY_LOAD = 'lazy_load';
 
     const OPTIONS = [
         self::CONFIG_MUTATIONS,
-        self::CONFIG_IGNORED
+        self::CONFIG_IGNORED,
+        self::CONFIG_LAZY_LOAD
     ];
 
     public static function init()
@@ -99,6 +101,12 @@ class Filejet
         return $config[self::CONFIG_IGNORED] ?? [];
     }
 
+    public static function get_lazy_loaded()
+    {
+        $config = self::get_config();
+        return $config[self::CONFIG_LAZY_LOAD] ?? [];
+    }
+
     public static function get_storage_id()
     {
         return apply_filters('filejet_get_storage_id', defined('FILEJET_STORAGE_ID') ? constant('FILEJET_STORAGE_ID') : get_option('filejet_storage_id'));
@@ -124,7 +132,7 @@ class Filejet
 
     public static function content_filter($content)
     {
-        return self::$filejetHandler->replaceImages($content, \Filejet::get_ignored(), \Filejet::get_mutations());
+        return self::$filejetHandler->replaceImages($content, \Filejet::get_ignored(), \Filejet::get_mutations(), \Filejet::get_lazy_loaded());
     }
 
 
@@ -143,13 +151,6 @@ class Filejet
         }
         return false;
     }
-
-
-    public static function excerpt_filter($content)
-    {
-        return self::$filejetHandler->replaceImages($content, \Filejet::get_ignored(), \Filejet::get_mutations());
-    }
-
 
     private static function bail_on_activation($message, $deactivate = true)
     {
