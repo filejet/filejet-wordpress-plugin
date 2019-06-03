@@ -96,19 +96,19 @@ class Filejet
     public static function get_mutations()
     {
         $config = self::get_config();
-        return array_key_exists(self::CONFIG_MUTATIONS, $config[self::CONFIG_MUTATIONS]) ? $config[self::CONFIG_MUTATIONS] : [];
+        return array_key_exists(self::CONFIG_MUTATIONS, $config) ? $config[self::CONFIG_MUTATIONS] : [];
     }
 
     public static function get_ignored()
     {
         $config = self::get_config();
-        return array_key_exists(self::CONFIG_IGNORED, $config[self::CONFIG_IGNORED]) ? $config[self::CONFIG_IGNORED] : [];
+        return array_key_exists(self::CONFIG_IGNORED, $config) ? $config[self::CONFIG_IGNORED] : [];
     }
 
     public static function get_lazy_loaded()
     {
         $config = self::get_config();
-        return array_key_exists(self::CONFIG_LAZY_LOAD, $config[self::CONFIG_LAZY_LOAD]) ? $config[self::CONFIG_LAZY_LOAD] : [];
+        return array_key_exists(self::CONFIG_LAZY_LOAD, $config) ? $config[self::CONFIG_LAZY_LOAD] : [];
     }
 
     public static function get_storage_id()
@@ -214,6 +214,16 @@ class Filejet
             $message = '<strong>' . sprintf(esc_html__('Filejet %s requires WordPress %s or higher.', 'filejet'), FILEJET_VERSION, FILEJET__MINIMUM_WP_VERSION) . '</strong> ' . sprintf(__('Please <a href="%1$s">upgrade WordPress</a> to a current version, or <a href="%2$s">downgrade to version 2.4 of the Filejet plugin</a>.', 'filejet'), 'https://codex.wordpress.org/Upgrading_WordPress', 'https://wordpress.org/extend/plugins/filejet/download/');
             Filejet::bail_on_activation($message);
         }
+
+        $config = [];
+
+        $config_current = Filejet::get_config();
+        $config = array_merge($config, array_key_exists(Filejet::CONFIG_LAZY_LOAD, $config_current) ? $config_current[Filejet::CONFIG_LAZY_LOAD] : []);
+
+        $config['data-src'] = 'data-srcset';
+        $config['data-lazy-src'] = 'data-lazy-srcset';
+        $config_current[Filejet::CONFIG_LAZY_LOAD] = $config;
+        update_option('filejet_config', json_encode($config_current));
     }
 
     /**
