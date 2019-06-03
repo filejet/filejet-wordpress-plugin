@@ -19,7 +19,7 @@ class Filejet
 
     public static function init()
     {
-        self::$filejetHandler = new FileJet\External\ReplaceHtml(self::get_storage_id(), 'data-fj-src', null, self::get_secret());
+        self::$filejetHandler = new FileJet\External\ReplaceHtml(self::get_storage_id(), null, self::get_secret());
 
         if (!self::$initiated) {
             self::init_hooks();
