@@ -28,6 +28,8 @@ $active_tab = array_key_exists('tab', $_GET) && Filejet_Admin::tab_is_allowed($_
                     <a href="<?= Filejet_Admin::get_page_url_with_tab(Filejet_Admin::TAB_CONFIGURATION) ?>"
                        class="nav-tab<?= $active_tab === Filejet_Admin::TAB_CONFIGURATION ? ' nav-tab-active' : '' ?>">Ignore
                         list</a>
+                    <a href="<?= Filejet_Admin::get_page_url_with_tab(Filejet_Admin::TAB_LAZY_LOAD) ?>"
+                       class="nav-tab<?= $active_tab === Filejet_Admin::TAB_LAZY_LOAD ? ' nav-tab-active' : '' ?>">Lazy load</a>
                 </h2>
 
                 <div class="filejet-box">
@@ -107,6 +109,47 @@ $active_tab = array_key_exists('tab', $_GET) && Filejet_Admin::tab_is_allowed($_
                                 <input type="submit" name="submit" id="submit" class="filejet-button fj_button"
                                        value="<?php esc_attr_e('Add to ignore list', 'filejet'); ?>">
                             </p>
+                        </form>
+                    <?php elseif ($active_tab === Filejet_Admin::TAB_LAZY_LOAD): ?>
+                        <h2><?php esc_html_e('Lazy load', 'filejet'); ?></h2>
+                        <p><?php echo esc_html__('Add attributes of the images that are lazy loaded.', 'filejet') ?></p>
+                        <?php if ($config = Filejet::get_lazy_loaded()) { ?>
+                            <?php foreach ($config as $key => $value) { ?>
+                                <form action="<?php echo esc_url(Filejet_Admin::get_page_url_with_tab($active_tab)); ?>"
+                                      method="post">
+                                    <?php wp_nonce_field(Filejet_Admin::NONCE) ?>
+                                    <input type="hidden" name="action"
+                                           value="<?php echo Filejet_Action::DELETE_LAZY_LOAD_SETTING ?>">
+                                    <input type="hidden" name="class" value="<?php echo $key ?>">
+                                    <p><span style="width: 80%;display: inline-block;">
+                                            <strong>src:</strong> <?= $key ?> <?= $value ? "<strong>srcset:</strong> $value" : "" ?></span>
+                                        <input type="submit" name="submit" id="submit"
+                                               class="filejet-button filejet-danger"
+                                               value="<?php esc_attr_e('Delete', 'filejet'); ?>">
+                                    </p>
+                                </form>
+                            <?php } ?>
+
+                        <?php } ?>
+
+                        <form action="<?php echo esc_url(Filejet_Admin::get_page_url_with_tab($active_tab)); ?>"
+                              method="post" class="filejet_form filejet_config_form">
+                            <?php wp_nonce_field(Filejet_Admin::NONCE) ?>
+                            <input type="hidden" name="action"
+                                   value="<?php echo Filejet_Action::ADD_LAZY_LOAD_SETTING ?>">
+                            <p class="filejet-input-wrapper">
+                                <label for="src">src*</label>
+                                <input type="text" id="src" name="src" value="" class="regular-text code">
+                            </p>
+                            <p class="filejet-input-wrapper">
+                                <label for="srcset">srcset</label>
+                                <input type="text" id="srcset" name="srcset" value="" class="regular-text code">
+                            </p>
+                            <p>
+                                <input type="submit" name="submit" id="submit" class="filejet-button fj_button"
+                                       value="<?php esc_attr_e('Add to lazy load list', 'filejet'); ?>">
+                            </p>
+                            <p>* required</p>
                         </form>
                     <?php endif; ?>
                 </div>

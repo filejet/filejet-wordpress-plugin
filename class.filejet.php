@@ -9,15 +9,21 @@ class Filejet
 
     const CONFIG_MUTATIONS = 'mutations';
     const CONFIG_IGNORED = 'ignored';
+    const CONFIG_LAZY_LOAD = 'lazy_load';
+
+    const API_KEY = 'filejet_api_key';
+    const SECRET = 'filejet_secret';
+    const STORAGE_ID = 'filejet_storage_id';
 
     const OPTIONS = [
         self::CONFIG_MUTATIONS,
-        self::CONFIG_IGNORED
+        self::CONFIG_IGNORED,
+        self::CONFIG_LAZY_LOAD
     ];
 
     public static function init()
     {
-        self::$filejetHandler = new FileJet\External\ReplaceHtml(self::get_storage_id(), 'data-fj-src', null, self::get_secret());
+        self::$filejetHandler = new FileJet\External\ReplaceHtml(self::get_storage_id(), null, self::get_secret());
 
         if (!self::$initiated) {
             self::init_hooks();
@@ -73,12 +79,12 @@ class Filejet
 
     public static function get_api_key()
     {
-        return apply_filters('filejet_get_api_key', defined('FILEJET_API_KEY') ? constant('FILEJET_API_KEY') : get_option('filejet_api_key'));
+        return apply_filters('filejet_get_api_key', defined('FILEJET_API_KEY') ? constant('FILEJET_API_KEY') : get_option(self::API_KEY));
     }
 
     public static function get_secret()
     {
-        return apply_filters('filejet_get_secret', defined('FILEJET_SECRET') ? constant('FILEJET_SECRET') : get_option('filejet_secret'));
+        return apply_filters('filejet_get_secret', defined('FILEJET_SECRET') ? constant('FILEJET_SECRET') : get_option(self::SECRET));
     }
 
 
@@ -90,18 +96,24 @@ class Filejet
     public static function get_mutations()
     {
         $config = self::get_config();
-        return $config[self::CONFIG_MUTATIONS] ?? [];
+        return array_key_exists(self::CONFIG_MUTATIONS, $config) ? $config[self::CONFIG_MUTATIONS] : [];
     }
 
     public static function get_ignored()
     {
         $config = self::get_config();
-        return $config[self::CONFIG_IGNORED] ?? [];
+        return array_key_exists(self::CONFIG_IGNORED, $config) ? $config[self::CONFIG_IGNORED] : [];
+    }
+
+    public static function get_lazy_loaded()
+    {
+        $config = self::get_config();
+        return array_key_exists(self::CONFIG_LAZY_LOAD, $config) ? $config[self::CONFIG_LAZY_LOAD] : [];
     }
 
     public static function get_storage_id()
     {
-        return apply_filters('filejet_get_storage_id', defined('FILEJET_STORAGE_ID') ? constant('FILEJET_STORAGE_ID') : get_option('filejet_storage_id'));
+        return apply_filters('filejet_get_storage_id', defined('FILEJET_STORAGE_ID') ? constant('FILEJET_STORAGE_ID') : get_option(self::STORAGE_ID));
     }
 
     public static function add_theme_style()
@@ -124,7 +136,7 @@ class Filejet
 
     public static function content_filter($content)
     {
-        return self::$filejetHandler->replaceImages($content, \Filejet::get_ignored(), \Filejet::get_mutations());
+        return self::$filejetHandler->replaceImages($content, \Filejet::get_ignored(), \Filejet::get_mutations(), \Filejet::get_lazy_loaded());
     }
 
 
@@ -143,13 +155,6 @@ class Filejet
         }
         return false;
     }
-
-
-    public static function excerpt_filter($content)
-    {
-        return self::$filejetHandler->replaceImages($content, \Filejet::get_ignored(), \Filejet::get_mutations());
-    }
-
 
     private static function bail_on_activation($message, $deactivate = true)
     {
@@ -209,6 +214,16 @@ class Filejet
             $message = '<strong>' . sprintf(esc_html__('Filejet %s requires WordPress %s or higher.', 'filejet'), FILEJET_VERSION, FILEJET__MINIMUM_WP_VERSION) . '</strong> ' . sprintf(__('Please <a href="%1$s">upgrade WordPress</a> to a current version, or <a href="%2$s">downgrade to version 2.4 of the Filejet plugin</a>.', 'filejet'), 'https://codex.wordpress.org/Upgrading_WordPress', 'https://wordpress.org/extend/plugins/filejet/download/');
             Filejet::bail_on_activation($message);
         }
+
+        $config = [];
+
+        $config_current = Filejet::get_config();
+        $config = array_merge($config, array_key_exists(Filejet::CONFIG_LAZY_LOAD, $config_current) ? $config_current[Filejet::CONFIG_LAZY_LOAD] : []);
+
+        $config['data-src'] = 'data-srcset';
+        $config['data-lazy-src'] = 'data-lazy-srcset';
+        $config_current[Filejet::CONFIG_LAZY_LOAD] = $config;
+        update_option('filejet_config', json_encode($config_current));
     }
 
     /**
@@ -218,7 +233,18 @@ class Filejet
      */
     public static function plugin_deactivation()
     {
+    }
 
+    /**
+     * Removes all connection options
+     *
+     * @static
+     */
+    public static function plugin_uninstall()
+    {
+        delete_option(self::API_KEY);
+        delete_option(self::SECRET);
+        delete_option(self::STORAGE_ID);
     }
 
     public static function is_rest()

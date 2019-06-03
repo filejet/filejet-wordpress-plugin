@@ -31,6 +31,7 @@ if (!defined('FILEJET_PLUGIN_BASENAME')) {
 
 register_activation_hook(__FILE__, array('Filejet', 'plugin_activation'));
 register_deactivation_hook(__FILE__, array('Filejet', 'plugin_deactivation'));
+register_uninstall_hook(__FILE__, array('Filejet', 'plugin_uninstall'));
 
 function buffer_start()
 {

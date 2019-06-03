@@ -7,6 +7,7 @@ class Filejet_Admin
 
     const TAB_CONFIGURATION = 'configuration';
     const TAB_MUTATIONS = 'mutations';
+    const TAB_LAZY_LOAD = 'lazy_load';
 
     private static $initiated = false;
     private static $notices = array();
@@ -18,7 +19,9 @@ class Filejet_Admin
             self::init_hooks();
         }
 
-        switch (Filejet_Action::validate($_POST['action'] ?? null)) {
+        $key = array_key_exists('action', $_POST) ? $_POST['action'] : null;
+
+        switch (Filejet_Action::validate($key)) {
             case Filejet_Action::ENTER_KEY:
                 self::enter_api_key();
                 break;
@@ -28,11 +31,17 @@ class Filejet_Admin
             case Filejet_Action::ADD_IGNORE_SETTING:
                 self::add_ignore_setting();
                 break;
+            case Filejet_Action::ADD_LAZY_LOAD_SETTING:
+                self::add_lazy_load_setting();
+                break;
             case Filejet_Action::DELETE_MUTATION_SETTING:
                 self::delete_setting(Filejet::CONFIG_MUTATIONS);
                 break;
             case Filejet_Action::DELETE_IGNORE_SETTING:
                 self::delete_setting(Filejet::CONFIG_IGNORED);
+                break;
+            case Filejet_Action::DELETE_LAZY_LOAD_SETTING:
+                self::delete_setting(Filejet::CONFIG_LAZY_LOAD);
                 break;
         }
     }
@@ -133,7 +142,8 @@ class Filejet_Admin
             $tab,
             [
                 self::TAB_CONFIGURATION,
-                self::TAB_MUTATIONS
+                self::TAB_MUTATIONS,
+                self::TAB_LAZY_LOAD,
             ],
             true
         );
@@ -186,7 +196,7 @@ class Filejet_Admin
                 delete_option('secret');
                 self::$notices[] = 'new-key-empty';
             }
-        } elseif ($new_key != $old_key) {
+        } elseif ($new_key !== $old_key) {
             self::save_key($storage_id, $new_key, $new_secret);
         }
 
@@ -214,7 +224,7 @@ class Filejet_Admin
         $config = [];
 
         $config_current = Filejet::get_config();
-        $config = array_merge($config, $config_current[Filejet::CONFIG_MUTATIONS] ?? []);
+        $config = array_merge($config, array_key_exists(Filejet::CONFIG_MUTATIONS, $config_current) ? $config_current[Filejet::CONFIG_MUTATIONS] : []);
 
 
         if (!empty($class) && !empty($mutation)) {
@@ -245,7 +255,7 @@ class Filejet_Admin
         $config = [];
 
         $config_current = Filejet::get_config();
-        $config = array_merge($config, $config_current[Filejet::CONFIG_IGNORED] ?? []);
+        $config = array_merge($config, array_key_exists(Filejet::CONFIG_IGNORED, $config_current) ? $config_current[Filejet::CONFIG_IGNORED] : []);
 
 
         if (!empty($class)) {
@@ -257,8 +267,41 @@ class Filejet_Admin
         return true;
     }
 
+    public static function add_lazy_load_setting()
+    {
+        if (!current_user_can('manage_options')) {
+            die(__('Cheatin&#8217; uh?', 'Filejet'));
+        }
 
-    public static function delete_setting(string $option)
+        if (!wp_verify_nonce($_POST['_wpnonce'], self::NONCE)) {
+            return false;
+        }
+
+        $src = preg_replace('/[^a-z0-9-_]/i', '', $_POST['src']);
+        $srcset = preg_replace('/[^a-z0-9-_]/i', '', $_POST['srcset']);
+
+        if(!$src || $src === 'src' || $srcset === 'srcset') {
+            return false;
+        }
+
+
+        $config = [];
+
+        $config_current = Filejet::get_config();
+        $config = array_merge($config, array_key_exists(Filejet::CONFIG_LAZY_LOAD, $config_current) ? $config_current[Filejet::CONFIG_LAZY_LOAD] : []);
+
+
+        if (!empty($src)) {
+            $config[$src] = $srcset;
+            $config_current[Filejet::CONFIG_LAZY_LOAD] = $config;
+            update_option('filejet_config', json_encode($config_current));
+        }
+
+        return true;
+    }
+
+
+    public static function delete_setting($option)
     {
         if (!current_user_can('manage_options')) {
             die(__('Cheatin&#8217; uh?', 'Filejet'));
@@ -276,7 +319,7 @@ class Filejet_Admin
         $class = preg_replace('/[^a-z0-9-_]/i', '', $_POST['class']);
 
         $config = Filejet::get_config();
-        $option_config = $config[$option] ?? [];
+        $option_config = array_key_exists($option, $config) ? $config[$option] : [];
         if (!empty($class) && array_key_exists($class, $option_config)) {
             unset($option_config[$class]);
 
@@ -304,7 +347,7 @@ class Filejet_Admin
 
     public static function plugin_action_links($links, $file)
     {
-        if ($file == plugin_basename(plugin_dir_url(__FILE__) . '/filejet.php')) {
+        if ($file === plugin_basename(plugin_dir_url(__FILE__) . '/filejet.php')) {
             $links[] = '<a href="' . esc_url(self::get_page_url()) . '">' . esc_html__('Settings', 'filejet') . '</a>';
         }
 
@@ -314,7 +357,7 @@ class Filejet_Admin
 
     public static function display_page()
     {
-        if (!Filejet::get_api_key() || (isset($_GET['view']) && $_GET['view'] == 'welcome')) {
+        if (!Filejet::get_api_key() || (isset($_GET['view']) && $_GET['view'] === 'welcome')) {
             self::display_welcome_page();
         } else {
             self::display_configuration_page();
@@ -353,12 +396,7 @@ class Filejet_Admin
 
     public static function display_configuration_page()
     {
-        $api_key = Filejet::get_api_key();
-
-
-        $notices = array();
-
-        Filejet::view('setup', compact('api_key', 'filejet_user', 'notices'));
+        Filejet::view('setup');
     }
 
 
