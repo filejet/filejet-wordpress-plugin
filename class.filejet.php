@@ -11,6 +11,10 @@ class Filejet
     const CONFIG_IGNORED = 'ignored';
     const CONFIG_LAZY_LOAD = 'lazy_load';
 
+    const API_KEY = 'filejet_api_key';
+    const SECRET = 'filejet_secret';
+    const STORAGE_ID = 'filejet_storage_id';
+
     const OPTIONS = [
         self::CONFIG_MUTATIONS,
         self::CONFIG_IGNORED,
@@ -75,12 +79,12 @@ class Filejet
 
     public static function get_api_key()
     {
-        return apply_filters('filejet_get_api_key', defined('FILEJET_API_KEY') ? constant('FILEJET_API_KEY') : get_option('filejet_api_key'));
+        return apply_filters('filejet_get_api_key', defined('FILEJET_API_KEY') ? constant('FILEJET_API_KEY') : get_option(self::API_KEY));
     }
 
     public static function get_secret()
     {
-        return apply_filters('filejet_get_secret', defined('FILEJET_SECRET') ? constant('FILEJET_SECRET') : get_option('filejet_secret'));
+        return apply_filters('filejet_get_secret', defined('FILEJET_SECRET') ? constant('FILEJET_SECRET') : get_option(self::SECRET));
     }
 
 
@@ -92,24 +96,24 @@ class Filejet
     public static function get_mutations()
     {
         $config = self::get_config();
-        return $config[self::CONFIG_MUTATIONS] ?? [];
+        return array_key_exists(self::CONFIG_MUTATIONS, $config[self::CONFIG_MUTATIONS]) ? $config[self::CONFIG_MUTATIONS] : [];
     }
 
     public static function get_ignored()
     {
         $config = self::get_config();
-        return $config[self::CONFIG_IGNORED] ?? [];
+        return array_key_exists(self::CONFIG_IGNORED, $config[self::CONFIG_IGNORED]) ? $config[self::CONFIG_IGNORED] : [];
     }
 
     public static function get_lazy_loaded()
     {
         $config = self::get_config();
-        return $config[self::CONFIG_LAZY_LOAD] ?? [];
+        return array_key_exists(self::CONFIG_LAZY_LOAD, $config[self::CONFIG_LAZY_LOAD]) ? $config[self::CONFIG_LAZY_LOAD] : [];
     }
 
     public static function get_storage_id()
     {
-        return apply_filters('filejet_get_storage_id', defined('FILEJET_STORAGE_ID') ? constant('FILEJET_STORAGE_ID') : get_option('filejet_storage_id'));
+        return apply_filters('filejet_get_storage_id', defined('FILEJET_STORAGE_ID') ? constant('FILEJET_STORAGE_ID') : get_option(self::STORAGE_ID));
     }
 
     public static function add_theme_style()
@@ -219,7 +223,18 @@ class Filejet
      */
     public static function plugin_deactivation()
     {
+    }
 
+    /**
+     * Removes all connection options
+     *
+     * @static
+     */
+    public static function plugin_uninstall()
+    {
+        delete_option(self::API_KEY);
+        delete_option(self::SECRET);
+        delete_option(self::STORAGE_ID);
     }
 
     public static function is_rest()

@@ -11,7 +11,7 @@ class Filejet_Action
     const DELETE_LAZY_LOAD_SETTING = 'delete-lazy-load-setting';
 
 
-    public static function validate($action = ''): string
+    public static function validate($action = '')
     {
         $allowedActions = [
             self::ENTER_KEY,
@@ -23,7 +23,7 @@ class Filejet_Action
             self::DELETE_LAZY_LOAD_SETTING
         ];
 
-        if (!empty($action) && in_array($action, $allowedActions)) {
+        if (!empty($action) && in_array($action, $allowedActions, true)) {
             return $action;
         }
 
