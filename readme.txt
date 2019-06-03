@@ -63,6 +63,12 @@ No. You won't loose any of your images after stopping the FileJet Pro plugin. We
 
 == Changelog ==
 
+= 1.3 =
+* remove credentials when the plugin is uninstalled
+* add management of lazy-load src and srcset arguments
+* add support for background-image within inline styles
+* support for PHP 5.6 and more
+
 = 1.2.2 =
 * ignore base64 encoded images in src attribute
 * guess host for relative image paths

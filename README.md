@@ -6,7 +6,7 @@ We welcome your feedback and we accept pull-requests.
 # Installation
 
 ```
-# build the image with PHP 7 and composer
+# build the image with PHP 5.6 and composer
 docker build -t filejet-wordpress-plugin - < Dockerfile
 
 # install vendors
