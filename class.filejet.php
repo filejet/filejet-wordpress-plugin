@@ -220,8 +220,8 @@ class Filejet
         $config_current = Filejet::get_config();
         $config = array_merge($config, array_key_exists(Filejet::CONFIG_LAZY_LOAD, $config_current) ? $config_current[Filejet::CONFIG_LAZY_LOAD] : []);
 
-        $config['data-src'] = 'data-srcset';
-        $config['data-lazy-src'] = 'data-lazy-srcset';
+        $config['data-src'] = 'data-src';
+        $config['data-srcset'] = 'data-srcset';
         $config_current[Filejet::CONFIG_LAZY_LOAD] = $config;
         update_option('filejet_config', json_encode($config_current));
     }

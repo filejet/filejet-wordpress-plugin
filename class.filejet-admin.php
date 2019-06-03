@@ -277,10 +277,9 @@ class Filejet_Admin
             return false;
         }
 
-        $src = preg_replace('/[^a-z0-9-_]/i', '', $_POST['src']);
-        $srcset = preg_replace('/[^a-z0-9-_]/i', '', $_POST['srcset']);
+        $attribute = preg_replace('/[^a-z0-9-_]/i', '', $_POST['attribute']);
 
-        if(!$src || $src === 'src' || $srcset === 'srcset') {
+        if(!$attribute || in_array($attribute, ['src', 'srcset'])) {
             return false;
         }
 
@@ -291,8 +290,8 @@ class Filejet_Admin
         $config = array_merge($config, array_key_exists(Filejet::CONFIG_LAZY_LOAD, $config_current) ? $config_current[Filejet::CONFIG_LAZY_LOAD] : []);
 
 
-        if (!empty($src)) {
-            $config[$src] = $srcset;
+        if (!empty($attribute)) {
+            $config[$attribute] = $attribute;
             $config_current[Filejet::CONFIG_LAZY_LOAD] = $config;
             update_option('filejet_config', json_encode($config_current));
         }
