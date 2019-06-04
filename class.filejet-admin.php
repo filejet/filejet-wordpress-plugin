@@ -5,9 +5,17 @@ class Filejet_Admin
 
     const NONCE = 'filejet-config-data';
 
-    const TAB_CONFIGURATION = 'configuration';
+    const TAB_OVERVIEW = 'overview';
     const TAB_MUTATIONS = 'mutations';
+    const TAB_CONFIGURATION = 'configuration';
     const TAB_LAZY_LOAD = 'lazy_load';
+
+    const NAV = [
+        self::TAB_OVERVIEW => 'Overview',
+        self::TAB_MUTATIONS => 'Mutations',
+        self::TAB_CONFIGURATION => 'Ignore list',
+        self::TAB_LAZY_LOAD => 'Image attributes'
+    ];
 
     private static $initiated = false;
     private static $notices = array();
@@ -56,9 +64,24 @@ class Filejet_Admin
         add_action('after_setup_theme', 'myplugin_after_setup_theme');
         add_filter('all_plugins', array('Filejet_Admin', 'modify_plugin_description'));
         add_filter('plugin_action_links_' . FILEJET_PLUGIN_BASENAME, array('Filejet_Admin', 'addPluginActionLinks'));
+        add_action('wp_dashboard_setup', array('Filejet_Admin', 'init_filejet_dashboard_widget'));
     }
 
-    function addPluginActionLinks($action_links)
+    public static function init_filejet_dashboard_widget()
+    {
+        wp_add_dashboard_widget(
+            'filejet_dashboard_widget',
+            '<img src="' .esc_url(plugins_url('assets/images/logo-white.svg', __FILE__)) . '" class="logo-white">',
+            ['Filejet_Admin', 'filejet_dashboard_widget']
+        );
+    }
+
+    public static function filejet_dashboard_widget()
+    {
+        Filejet::view('widget', array('type' => 'plugin'));
+    }
+
+    public static function addPluginActionLinks($action_links)
     {
         $settings_link = '<a href="options-general.php?page=' . FILEJET_PLUGIN_BASENAME . '">' . __('Settings', FILEJET_PLUGIN_BASENAME) . '</a>';
         array_unshift($action_links, $settings_link);
@@ -131,9 +154,9 @@ class Filejet_Admin
         return add_query_arg(['page' => $page], admin_url('admin.php'));
     }
 
-    public static function get_page_url_with_tab($tab = self::TAB_CONFIGURATION, $page = FILEJET_PLUGIN_BASENAME)
+    public static function get_page_url_with_tab($tab = self::TAB_CONFIGURATION, array $additional = [], $page = FILEJET_PLUGIN_BASENAME)
     {
-        return add_query_arg(['page' => $page, 'tab' => $tab], admin_url('admin.php'));
+        return add_query_arg(array_merge(['page' => $page, 'tab' => $tab], $additional), admin_url('admin.php'));
     }
 
     public static function tab_is_allowed($tab)
@@ -167,6 +190,8 @@ class Filejet_Admin
         ) {
             wp_register_style('filejet.css', plugin_dir_url(__FILE__) . 'assets/filejet.css', array(), FILEJET_VERSION);
             wp_enqueue_style('filejet.css');
+            wp_register_script('chart.js', plugin_dir_url(__FILE__) . 'assets/js/Chart.bundle.min.js', array(), FILEJET_VERSION);
+            wp_enqueue_script('chart.js');
         }
     }
 
@@ -398,5 +423,35 @@ class Filejet_Admin
         Filejet::view('setup');
     }
 
+    public static function get_statistics_data($year = null, $month = null)
+    {
+        $curl = curl_init();
+        curl_setopt_array($curl, [
+            CURLOPT_RETURNTRANSFER => 1,
+            CURLOPT_URL => sprintf(
+                'https://twrfq4l8y8.execute-api.eu-west-1.amazonaws.com/prod/stats?apiKey=%s&storageId=%s&year=%s&month=%s',
+                Filejet::get_api_key(),
+                Filejet::get_storage_id(),
+                $year ?: (new \DateTime())->format('Y'),
+                $month ?: (new \DateTime())->format('n')
+            )
+        ]);
+        $resp = curl_exec($curl);
+        curl_close($curl);
 
+        $decoded = json_decode($resp, true);
+
+        if(json_last_error() !== JSON_ERROR_NONE) {
+            return [];
+        }
+
+        return $decoded;
+    }
+
+    public static function format_bytes($bytes, $decimals = 2)
+    {
+        $size = array('B','kB','MB','GB','TB','PB','EB','ZB','YB');
+        $factor = floor((strlen($bytes) - 1) / 3);
+        return sprintf("%.{$decimals}f", $bytes / pow(1024, $factor)) . ' ' . @$size[$factor];
+    }
 }
