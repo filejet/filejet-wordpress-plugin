@@ -5,9 +5,17 @@ class Filejet_Admin
 
     const NONCE = 'filejet-config-data';
 
-    const TAB_CONFIGURATION = 'configuration';
+    const TAB_OVERVIEW = 'overview';
     const TAB_MUTATIONS = 'mutations';
+    const TAB_CONFIGURATION = 'configuration';
     const TAB_LAZY_LOAD = 'lazy_load';
+
+    const NAV = [
+        self::TAB_OVERVIEW => 'Overview',
+        self::TAB_MUTATIONS => 'Mutations',
+        self::TAB_CONFIGURATION => 'Ignore list',
+        self::TAB_LAZY_LOAD => 'Image attributes'
+    ];
 
     private static $initiated = false;
     private static $notices = array();
@@ -131,9 +139,9 @@ class Filejet_Admin
         return add_query_arg(['page' => $page], admin_url('admin.php'));
     }
 
-    public static function get_page_url_with_tab($tab = self::TAB_CONFIGURATION, $page = FILEJET_PLUGIN_BASENAME)
+    public static function get_page_url_with_tab($tab = self::TAB_CONFIGURATION, array $additional = [], $page = FILEJET_PLUGIN_BASENAME)
     {
-        return add_query_arg(['page' => $page, 'tab' => $tab], admin_url('admin.php'));
+        return add_query_arg(array_merge(['page' => $page, 'tab' => $tab], $additional), admin_url('admin.php'));
     }
 
     public static function tab_is_allowed($tab)
@@ -167,6 +175,8 @@ class Filejet_Admin
         ) {
             wp_register_style('filejet.css', plugin_dir_url(__FILE__) . 'assets/filejet.css', array(), FILEJET_VERSION);
             wp_enqueue_style('filejet.css');
+            wp_register_script('chart.js', plugin_dir_url(__FILE__) . 'assets/js/Chart.bundle.min.js', array(), FILEJET_VERSION);
+            wp_enqueue_script('chart.js');
         }
     }
 
@@ -398,5 +408,35 @@ class Filejet_Admin
         Filejet::view('setup');
     }
 
+    public static function get_statistics_data($year = null, $month = null)
+    {
+        $curl = curl_init();
+        curl_setopt_array($curl, [
+            CURLOPT_RETURNTRANSFER => 1,
+            CURLOPT_URL => sprintf(
+                'https://twrfq4l8y8.execute-api.eu-west-1.amazonaws.com/prod/stats?apiKey=%s&storageId=%s&year=%s&month=%s',
+                '59f4b576d93440bb8389dc5270d57d3c',//Filejet::get_api_key(),
+                '4lvm4y',//Filejet::get_storage_id(),
+                $year ?: (new \DateTime())->format('Y'),
+                $month ?: (new \DateTime())->format('n')
+            )
+        ]);
+        $resp = curl_exec($curl);
+        curl_close($curl);
 
+        $decoded = json_decode($resp, true);
+
+        if(json_last_error() !== JSON_ERROR_NONE) {
+            return [];
+        }
+
+        return $decoded;
+    }
+
+    public static function format_bytes($bytes, $decimals = 2)
+    {
+        $size = array('B','kB','MB','GB','TB','PB','EB','ZB','YB');
+        $factor = floor((strlen($bytes) - 1) / 3);
+        return sprintf("%.{$decimals}f", $bytes / pow(1024, $factor)) . @$size[$factor];
+    }
 }
