@@ -99,6 +99,11 @@ $month = array_key_exists('month', $_GET) ? $_GET['month'] : null;
                                     responsive: true,
                                     tooltips: {
                                         mode: 'index',
+                                        callbacks: {
+                                            title: function() {
+                                                return '';
+                                            }
+                                        }
                                     },
                                     hover: {
                                         mode: 'index'
