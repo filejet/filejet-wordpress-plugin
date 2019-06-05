@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/filejet/filejet-external-php.git",
-                "reference": "eb8b6a25cb5fc9f63ec0b44c556c13e0f16e700e"
+                "reference": "c0fe4dcce8948ec8a2da109b6a8a25ffc346565b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/filejet/filejet-external-php/zipball/eb8b6a25cb5fc9f63ec0b44c556c13e0f16e700e",
-                "reference": "eb8b6a25cb5fc9f63ec0b44c556c13e0f16e700e",
+                "url": "https://api.github.com/repos/filejet/filejet-external-php/zipball/c0fe4dcce8948ec8a2da109b6a8a25ffc346565b",
+                "reference": "c0fe4dcce8948ec8a2da109b6a8a25ffc346565b",
                 "shasum": ""
             },
             "require": {
@@ -36,7 +36,7 @@
                 "MIT"
             ],
             "description": "Library containing functions for manipulating external files of FileJet",
-            "time": "2019-06-03T15:44:28+00:00"
+            "time": "2019-06-05T10:02:22+00:00"
         }
     ],
     "packages-dev": [
