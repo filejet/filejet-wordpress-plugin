@@ -34,15 +34,9 @@ $month = array_key_exists('month', $_GET) ? $_GET['month'] : null;
                 <div class="filejet-box">
 
                     <?php if ($active_tab === Filejet_Admin::TAB_OVERVIEW): ?>
-                        <h2>Overview</h2>
-                        <p>Enter the class of your image and the manual mutation you want FileJet to use. (by default, FileJet will try to guess the mutation). For more info on the mutations available, see the <a href="https://filejet.io/api-reference" target="_blank">api reference</a></p>
                     <?php
                         $stats = Filejet_Admin::get_statistics_data($year, $month);
                         $breakdown = $stats['breakdown'];
-                        $graphData = $stats['graphData'];
-                        $labels = array_column($graphData['masterImageAccessed'], 'day');
-                        $masterImageAccessed = array_column($graphData['masterImageAccessed'], 'value');
-                        $mutationAccessed = array_column($graphData['mutationAccessed'], 'value');
                         $currentPeriod = \DateTime::createFromFormat('Y-n', "{$stats['year']}-{$stats['month']}");
                         $previousPeriod = clone $currentPeriod;
                         $nextPeriod = clone $currentPeriod;
@@ -51,7 +45,7 @@ $month = array_key_exists('month', $_GET) ? $_GET['month'] : null;
                         $disableNextPeriod = (new \DateTime())->format('Yn') === $currentPeriod->format('Yn');
                         ?>
                     <div class="row">
-                        <h3>Stats <?= $currentPeriod->format('F Y') ?></h3>
+                        <h2>Stats > <?= $currentPeriod->format('F Y') ?></h2>
                         <div class="arrows">
                             <a href="<?= Filejet_Admin::get_page_url_with_tab($active_tab, ['year' => $previousPeriod->format('Y'), 'month' => $previousPeriod->format('n')]) ?>"><span class="dashicons dashicons-arrow-left-alt2"></span></a>
                             <?php if(false === $disableNextPeriod): ?>
@@ -99,6 +93,15 @@ $month = array_key_exists('month', $_GET) ? $_GET['month'] : null;
                             </li>
                         </ul>
                     </div>
+                        <?php
+
+                        $graphData = $stats['graphData'];
+
+                        if ($graphData):
+                        $labels = array_column($graphData['masterImageAccessed'], 'day');
+                        $masterImageAccessed = array_column($graphData['masterImageAccessed'], 'value');
+                        $mutationAccessed = array_column($graphData['mutationAccessed'], 'value');
+                        ?>
                     <div class="stats-chart">
                         <canvas id="stats" width="400" height="200"></canvas>
                         <script type="text/javascript">
@@ -164,6 +167,9 @@ $month = array_key_exists('month', $_GET) ? $_GET['month'] : null;
                             });
                         </script>
                     </div>
+                            <?php
+                        endif;
+                            ?>
                     <?php elseif ($active_tab === Filejet_Admin::TAB_MUTATIONS): ?>
                         <h2><?php esc_html_e('Mutations', 'filejet'); ?></h2>
                         <p><?php echo 'Enter the class of your image and the manual mutation you want FileJet to use. (by default, FileJet will try to guess the mutation). For more info on the mutations available, see the <a href="https://filejet.io/api-reference" target="_blank">api reference</a>' ?></p>
