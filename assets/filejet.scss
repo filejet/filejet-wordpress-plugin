@@ -10,8 +10,6 @@
   padding: 0.4em 1em 1.4em 1em;
   border-radius: 3px;
   -webkit-border-radius: 3px;
-  border-width: 1px;
-  border-style: solid;
   h3.filejet-key-status {
     color: #fff;
     margin: 1em 0 0.5em 0;
@@ -591,8 +589,58 @@ p.info {
 
 //dashboard widget
 
-#filejet_dashboard_widget {
+.logo-white{
+  max-width: 110px;
+}
 
+#filejet_dashboard_widget {
+  background: #1f2d36;
+  color: #fff;
+  h2 {
+    color: #fff;
+    border-bottom: none;
+  }
+  .inside{
+    h3{
+      color: #fff;
+    }
+    ul {
+      li {
+        background: #334048;
+        width: 100%;
+        .stats-item{
+          padding: 1rem;
+          display: flex;
+          flex-direction: row;
+          max-height: 60px;
+          img {
+            max-width: 65px;
+          }
+          span {
+            padding: .8rem 0px 0 1.5rem;
+            display: inline-block;
+            strong{
+              &:first-child{
+                font-weight: lighter;
+                display: block;
+                font-size: 2.6rem;
+                @media (max-width: 767px) {
+                  font-size: 1.8rem;
+                }
+              }
+              &:last-child{
+                font-weight: lighter;
+                display: inline-block;
+                font-size: .8rem;
+                text-transform: uppercase;
+                padding: .75rem 0 0 0;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
 }
 
 @media (max-width: 767px) {
