@@ -64,6 +64,21 @@ class Filejet_Admin
         add_action('after_setup_theme', 'myplugin_after_setup_theme');
         add_filter('all_plugins', array('Filejet_Admin', 'modify_plugin_description'));
         add_filter('plugin_action_links_' . FILEJET_PLUGIN_BASENAME, array('Filejet_Admin', 'addPluginActionLinks'));
+        add_action('wp_dashboard_setup', array('Filejet_Admin', 'add_your_dashboard_widget'));
+    }
+
+    function filejet_dashboard_widget()
+    {
+        Filejet::view('widget', array('type' => 'plugin'));
+    }
+
+    function add_your_dashboard_widget()
+    {
+        wp_add_dashboard_widget(
+            'filejet_dashboard_widget',
+            'Filejet',
+            ['Filejet_Admin', 'filejet_dashboard_widget']
+        );
     }
 
     function addPluginActionLinks($action_links)
