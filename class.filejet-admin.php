@@ -64,15 +64,10 @@ class Filejet_Admin
         add_action('after_setup_theme', 'myplugin_after_setup_theme');
         add_filter('all_plugins', array('Filejet_Admin', 'modify_plugin_description'));
         add_filter('plugin_action_links_' . FILEJET_PLUGIN_BASENAME, array('Filejet_Admin', 'addPluginActionLinks'));
-        add_action('wp_dashboard_setup', array('Filejet_Admin', 'add_your_dashboard_widget'));
+        add_action('wp_dashboard_setup', array('Filejet_Admin', 'init_filejet_dashboard_widget'));
     }
 
-    function filejet_dashboard_widget()
-    {
-        Filejet::view('widget', array('type' => 'plugin'));
-    }
-
-    function add_your_dashboard_widget()
+    public static function init_filejet_dashboard_widget()
     {
         wp_add_dashboard_widget(
             'filejet_dashboard_widget',
@@ -81,7 +76,12 @@ class Filejet_Admin
         );
     }
 
-    function addPluginActionLinks($action_links)
+    public static function filejet_dashboard_widget()
+    {
+        Filejet::view('widget', array('type' => 'plugin'));
+    }
+
+    public static function addPluginActionLinks($action_links)
     {
         $settings_link = '<a href="options-general.php?page=' . FILEJET_PLUGIN_BASENAME . '">' . __('Settings', FILEJET_PLUGIN_BASENAME) . '</a>';
         array_unshift($action_links, $settings_link);
