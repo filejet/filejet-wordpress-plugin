@@ -425,6 +425,10 @@ class Filejet_Admin
 
     public static function get_statistics_data($year = null, $month = null)
     {
+        if(!Filejet::get_storage_id() || !Filejet::get_api_key()) {
+            return;
+        }
+
         $curl = curl_init();
         curl_setopt_array($curl, [
             CURLOPT_RETURNTRANSFER => 1,
