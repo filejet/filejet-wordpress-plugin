@@ -50,20 +50,56 @@ $month = array_key_exists('month', $_GET) ? $_GET['month'] : null;
                         $nextPeriod->modify('+1 month');
                         $disableNextPeriod = (new \DateTime())->format('Yn') === $currentPeriod->format('Yn');
                         ?>
+                    <div class="row">
                         <h3>Stats <?= $currentPeriod->format('F Y') ?></h3>
-                        <div>
+                        <div class="arrows">
                             <a href="<?= Filejet_Admin::get_page_url_with_tab($active_tab, ['year' => $previousPeriod->format('Y'), 'month' => $previousPeriod->format('n')]) ?>"><span class="dashicons dashicons-arrow-left-alt2"></span></a>
                             <?php if(false === $disableNextPeriod): ?>
                             <a href="<?= Filejet_Admin::get_page_url_with_tab($active_tab, ['year' => $nextPeriod->format('Y'), 'month' => $nextPeriod->format('n')]) ?>"><span class="dashicons dashicons-arrow-right-alt2"></span></a>
                             <?php endif; ?>
                         </div>
-                        <ul>
-                            <li><img src="<?php echo esc_url( plugins_url( '../images/master-images.svg', __FILE__ ) ); ?>" alt=""> Master accessed <?= $breakdown['masterImageAccessed'] ?></li>
-                            <li><img src="<?php echo esc_url( plugins_url( '../images/renders.svg', __FILE__ ) ); ?>" alt=""> Mutations <?= $breakdown['mutationAccessed'] ?></li>
-                            <li><img src="<?php echo esc_url( plugins_url( '../images/total-requests.svg', __FILE__ ) ); ?>" alt=""> Bandwidth <?= Filejet_Admin::format_bytes($breakdown['bandwidth']) ?></li>
-                            <li><img src="<?php echo esc_url( plugins_url( '../images/avg-response.svg', __FILE__ ) ); ?>" alt=""> Avg. response (ms) <?= round($breakdown['averageResponseTime']) ?> ms</li>
+                    </div>
+                    <p class="info"><i>* statistics are re-calculated every hour</i></p>
+                    <div class="stats-wrapper">
+                        <ul class="stats-list row">
+                            <li>
+                                <div class="stats-item">
+                                <img src="<?php echo esc_url( plugins_url( '../images/master-images.svg', __FILE__ ) ); ?>" alt="">
+                                <span>
+                                    <strong><?= $breakdown['masterImageAccessed'] ?></strong>
+                                    Master accessed
+                                    </span>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="stats-item">
+                                <img src="<?php echo esc_url( plugins_url( '../images/renders.svg', __FILE__ ) ); ?>" alt="">
+                                    <span>
+                                        <strong><?= $breakdown['mutationAccessed'] ?></strong>
+                                        Mutations
+                                    </span>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="stats-item">
+                                <img src="<?php echo esc_url( plugins_url( '../images/total-requests.svg', __FILE__ ) ); ?>" alt="">
+                                    <span> <strong><?= Filejet_Admin::format_bytes($breakdown['bandwidth']) ?></strong>
+                                        Bandwidth
+                                    </span>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="stats-item">
+                                <img src="<?php echo esc_url( plugins_url( '../images/avg-response.svg', __FILE__ ) ); ?>" alt="">
+                                    <span>
+                                        <strong><?= round($breakdown['averageResponseTime']) ?>ms</strong>
+                                        Avg. response (ms)
+                                    </span>
+                                </div>
+                            </li>
                         </ul>
-                    <div>
+                    </div>
+                    <div class="stats-chart">
                         <canvas id="stats" width="400" height="200"></canvas>
                         <script type="text/javascript">
 
