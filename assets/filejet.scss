@@ -1,3 +1,6 @@
+//auto compile:
+// sass --watch filet.scss:filejet.css --style compressed
+
 .filejet-alert-text {
   color: #dd3d36;
   font-weight: bold;
@@ -528,6 +531,9 @@ input.filejet-danger {
 
 .stats-wrapper {
   padding: 0 1.5rem .5rem 1.5rem;
+  @media(max-width: 767px){
+    padding: 0 0 .5rem;
+  }
 }
 
 .row {
@@ -581,7 +587,7 @@ input.filejet-danger {
 
 p.info {
   text-align: right;
-  padding: 1rem 1.5rem 0 1.5rem;
+  padding: 1rem 0 0 1.5rem;
   @media (max-width: 767px) {
     text-align: left;
   }
@@ -590,15 +596,29 @@ p.info {
 //dashboard widget
 
 .logo-white{
-  max-width: 110px;
+  max-width: 90px;
 }
 
 #filejet_dashboard_widget {
   background: #1f2d36;
   color: #fff;
+  .handlediv{
+    position: relative;
+    top: 5px;
+    @media(max-width: 767px){
+      top: 2px;
+    }
+  }
   h2 {
     color: #fff;
     border-bottom: none;
+    span {
+      display: block;
+      img {
+        position: relative;
+        top: 2px;
+      }
+    }
   }
   .inside{
     h3{
