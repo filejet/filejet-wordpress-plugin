@@ -4,7 +4,7 @@ Tags: image optimization, webp, smart cdn, filejet
 Requires at least: 4.0
 Tested up to: 5.2
 Requires PHP: 5.6
-Stable tag: 1.3
+Stable tag: 1.3.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -58,10 +58,19 @@ No. You won't loose any of your images after stopping the FileJet Pro plugin. We
 == Screenshots ==
 
 1. FileJet Pro - credentials settings
-2. FileJet Pro - mutations settings
-3. FileJet Pro - ignore list settings
+2. FileJet Pro - overview
+3. FileJet Pro - mutation settings
+4. FileJet Pro - ignore list settings
+5. FileJet Pro - image attributes settings
+6. FileJet Pro - dashboard widget
 
 == Changelog ==
+
+= 1.3.2 =
+* add statistics and dashboard widget
+
+= 1.3.1 =
+* bugfix - ingore all src attributes with data URIs
 
 = 1.3 =
 * remove credentials when the plugin is uninstalled
