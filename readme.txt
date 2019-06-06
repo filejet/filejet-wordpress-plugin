@@ -58,8 +58,11 @@ No. You won't loose any of your images after stopping the FileJet Pro plugin. We
 == Screenshots ==
 
 1. FileJet Pro - credentials settings
-2. FileJet Pro - mutations settings
-3. FileJet Pro - ignore list settings
+2. FileJet Pro - overview
+3. FileJet Pro - mutation settings
+4. FileJet Pro - ignore list settings
+5. FileJet Pro - image attributes settings
+6. FileJet Pro - dashboard widget
 
 == Changelog ==
 
