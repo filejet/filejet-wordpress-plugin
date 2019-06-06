@@ -53,7 +53,6 @@ $month = array_key_exists('month', $_GET) ? $_GET['month'] : null;
                             <?php endif; ?>
                         </div>
                     </div>
-                    <p class="info"><i>* statistics are re-calculated every hour</i></p>
                     <div class="stats-wrapper">
                         <ul class="stats-list row">
                             <li>
@@ -166,6 +165,7 @@ $month = array_key_exists('month', $_GET) ? $_GET['month'] : null;
                                 }
                             });
                         </script>
+                        <p class="info"><i>* statistics are re-calculated every hour</i></p>
                     </div>
                             <?php
                         endif;

@@ -71,7 +71,7 @@ class Filejet_Admin
     {
         wp_add_dashboard_widget(
             'filejet_dashboard_widget',
-            'Filejet',
+            '<img src="' .esc_url(plugins_url('assets/images/logo-white.svg', __FILE__)) . '" class="logo-white">',
             ['Filejet_Admin', 'filejet_dashboard_widget']
         );
     }
@@ -425,13 +425,17 @@ class Filejet_Admin
 
     public static function get_statistics_data($year = null, $month = null)
     {
+        if(!Filejet::get_storage_id() || !Filejet::get_api_key()) {
+            return;
+        }
+
         $curl = curl_init();
         curl_setopt_array($curl, [
             CURLOPT_RETURNTRANSFER => 1,
             CURLOPT_URL => sprintf(
                 'https://twrfq4l8y8.execute-api.eu-west-1.amazonaws.com/prod/stats?apiKey=%s&storageId=%s&year=%s&month=%s',
-                '59f4b576d93440bb8389dc5270d57d3c',//Filejet::get_api_key(),
-                '4lvm4y',//Filejet::get_storage_id(),
+                Filejet::get_api_key(),
+                Filejet::get_storage_id(),
                 $year ?: (new \DateTime())->format('Y'),
                 $month ?: (new \DateTime())->format('n')
             )
@@ -452,6 +456,6 @@ class Filejet_Admin
     {
         $size = array('B','kB','MB','GB','TB','PB','EB','ZB','YB');
         $factor = floor((strlen($bytes) - 1) / 3);
-        return sprintf("%.{$decimals}f", $bytes / pow(1024, $factor)) . @$size[$factor];
+        return sprintf("%.{$decimals}f", $bytes / pow(1024, $factor)) . ' ' . @$size[$factor];
     }
 }
