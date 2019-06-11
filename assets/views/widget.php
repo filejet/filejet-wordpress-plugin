@@ -43,6 +43,9 @@ $currentPeriod = \DateTime::createFromFormat('Y-n', "{$stats['year']}-{$stats['m
         </div>
     </li>
 </ul>
+<div class="filejet-settings-anchor-wrapper">
+    <a href="<?php echo esc_url( Filejet_Admin::get_page_url() ); ?>">Settings</a>
+</div>
 <?php
 else:
 ?>
