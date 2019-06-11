@@ -1,5 +1,5 @@
 //auto compile:
-// sass --watch filet.scss:filejet.css --style compressed
+// sass --watch filejet.scss:filejet.css --style compressed
 
 .filejet-alert-text {
   color: #dd3d36;
@@ -597,6 +597,13 @@ p.info {
 
 .logo-white{
   max-width: 90px;
+}
+
+.filejet-settings-anchor-wrapper {
+  text-align: right;
+  a {
+    color: #ffffff;
+  }
 }
 
 #filejet_dashboard_widget {
