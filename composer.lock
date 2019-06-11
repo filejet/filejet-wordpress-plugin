@@ -4,11 +4,11 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "49be63213e51888ddbcec55b232a9c05",
+    "content-hash": "09fe15a0989469932285c05fe934dec3",
     "packages": [
         {
             "name": "filejet/filejet-external-php",
-            "version": "dev-wordpress",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/filejet/filejet-external-php.git",

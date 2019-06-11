@@ -199,12 +199,12 @@ $month = array_key_exists('month', $_GET) ? $_GET['month'] : null;
                                    value="<?php echo Filejet_Action::ADD_MUTATION_SETTING ?>">
                             <p class="filejet-input-wrapper">
                                 <label for="class">Class</label>
-                                <input type="text" id="class" name="class" value="" class="regular-text code">
+                                <input type="text" id="class" name="class" value="" class="regular-text">
                             </p>
                             <p class="filejet-input-wrapper">
                                 <label for="mutation">Mutation</label>
                                 <input id="mutation" name="mutation" type="text" size="32" value=""
-                                       class="regular-text code">
+                                       class="regular-text">
                             </p>
                             <p>
                                 <input type="submit" name="submit" id="submit" class="filejet-button fj_button"
@@ -239,7 +239,7 @@ $month = array_key_exists('month', $_GET) ? $_GET['month'] : null;
                                    value="<?php echo Filejet_Action::ADD_IGNORE_SETTING ?>">
                             <p class="filejet-input-wrapper">
                                 <label for="class">Class</label>
-                                <input type="text" id="class" name="class" value="" class="regular-text code">
+                                <input type="text" id="class" name="class" value="" class="regular-text">
                             </p>
                             <p>
                                 <input type="submit" name="submit" id="submit" class="filejet-button fj_button"
@@ -275,7 +275,7 @@ $month = array_key_exists('month', $_GET) ? $_GET['month'] : null;
                                    value="<?php echo Filejet_Action::ADD_LAZY_LOAD_SETTING ?>">
                             <p class="filejet-input-wrapper">
                                 <label for="src">Attribute</label>
-                                <input type="text" id="attribute" name="attribute" value="" class="regular-text code">
+                                <input type="text" id="attribute" name="attribute" value="" class="regular-text">
                             </p>
                             <p>
                                 <input type="submit" name="submit" id="submit" class="filejet-button fj_button"
