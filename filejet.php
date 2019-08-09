@@ -6,7 +6,7 @@
 Plugin Name: FileJet Pro
 Plugin URI: https://filejet.io/
 Description: <strong>Professional image optimization</strong> for your Wordpress site.
-Version: 1.3.3
+Version: 1.3.4
 Author: FileJet
 Text Domain: FileJet
 */
@@ -21,7 +21,7 @@ if (!function_exists('add_action')) {
     exit;
 }
 
-define('FILEJET_VERSION', '1.1');
+define('FILEJET_VERSION', '1.3.4');
 define('FILEJET__MINIMUM_WP_VERSION', '4.0');
 define('FILEJET__PLUGIN_DIR', plugin_dir_path(__FILE__));
 

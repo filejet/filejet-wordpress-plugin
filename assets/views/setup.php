@@ -7,6 +7,7 @@ $month = array_key_exists('month', $_GET) ? $_GET['month'] : null;
     <div class="filejet-header">
         <img class="filejet-header__logo"
              src="<?php echo esc_url(plugins_url('../images/logo-filejet.svg', __FILE__)); ?>" alt="Filejet"/>
+        <p style="color: #7d7d7d;"><?php echo FILEJET_VERSION ?></p>
     </div>
     <div class="filejet-lower">
         <div class="filejet-box">
