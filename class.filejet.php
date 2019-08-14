@@ -249,7 +249,11 @@ class Filejet
 
     public static function is_rest()
     {
-        if (!function_exists('rest_url') || empty($_SERVER['REQUEST_URI'])) return false;
+        global $wp_rewrite;
+
+        if (null === $wp_rewrite || !function_exists('rest_url') || !function_exists('get_rest_url') || empty($_SERVER['REQUEST_URI'])) {
+            return false;
+        }
 
         $sRestUrlBase = get_rest_url(get_current_blog_id(), '/');
         $sRestPath = trim(parse_url($sRestUrlBase, PHP_URL_PATH), '/');

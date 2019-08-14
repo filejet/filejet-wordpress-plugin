@@ -42,7 +42,7 @@ function buffer_start()
 
 function buffer_end()
 {
-    if (!is_admin() && !Filejet::is_rest() && Filejet::get_api_key()) {
+    if (!is_admin() && !Filejet::is_rest() && Filejet::get_api_key() && ob_get_length()) {
         ob_end_flush();
     }
 }
