@@ -118,7 +118,7 @@
 
 .filejet_activate {
   min-width: 825px;
-  border: 1px solidrgb(133, 98, 238);
+  border: 1px solid rgb(133, 98, 238);
   margin: 15px 0;
   background-image: url(images/header.jpg);
   background-size: cover;
@@ -628,6 +628,7 @@ p.info {
     }
   }
   .inside{
+    line-height: 1.4em;
     h3{
       color: #fff;
     }
