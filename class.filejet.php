@@ -134,9 +134,32 @@ class Filejet
         wp_localize_script('filejet', 'filejet_vars', $datatoBePassed);
     }
 
+    public static function is_json($string)
+    {
+        json_decode($string);
+        return (json_last_error() == JSON_ERROR_NONE);
+    }
+
     public static function content_filter($content)
     {
+        if(self::is_json($content)) {
+            $json = json_decode($content, true);
+            self::recursive_scan($json);
+            return json_encode($json, true);
+        }
+
         return self::$filejetHandler->replaceImages($content, \Filejet::get_ignored(), \Filejet::get_mutations(), \Filejet::get_lazy_loaded());
+    }
+
+    private static function recursive_scan(&$iterator)
+    {
+        foreach($iterator as $key => &$value){
+            if(is_array($value)){
+                self::recursive_scan($value);
+            } else{
+                $value = self::$filejetHandler->replaceImages($value, \Filejet::get_ignored(), \Filejet::get_mutations(), \Filejet::get_lazy_loaded());
+            }
+        }
     }
 
 
