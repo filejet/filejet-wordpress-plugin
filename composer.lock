@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/filejet/filejet-external-php.git",
-                "reference": "6dae748936165ea4ed58d50b73bbd8525fe1b150"
+                "reference": "4d435fc33c4cb9c3563c506214950f100cbac45e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/filejet/filejet-external-php/zipball/6dae748936165ea4ed58d50b73bbd8525fe1b150",
-                "reference": "6dae748936165ea4ed58d50b73bbd8525fe1b150",
+                "url": "https://api.github.com/repos/filejet/filejet-external-php/zipball/4d435fc33c4cb9c3563c506214950f100cbac45e",
+                "reference": "4d435fc33c4cb9c3563c506214950f100cbac45e",
                 "shasum": ""
             },
             "require": {
@@ -36,7 +36,7 @@
                 "MIT"
             ],
             "description": "Library containing functions for manipulating external files of FileJet",
-            "time": "2020-01-24T12:59:23+00:00"
+            "time": "2020-02-10T14:36:25+00:00"
         }
     ],
     "packages-dev": [
@@ -46,12 +46,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/squizlabs/PHP_CodeSniffer.git",
-                "reference": "a4d4cc37242b1639bd77e7242d2be8e8c5b4d289"
+                "reference": "6070b6083e0ab6cd3de43dea69ec820884836aac"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/a4d4cc37242b1639bd77e7242d2be8e8c5b4d289",
-                "reference": "a4d4cc37242b1639bd77e7242d2be8e8c5b4d289",
+                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/6070b6083e0ab6cd3de43dea69ec820884836aac",
+                "reference": "6070b6083e0ab6cd3de43dea69ec820884836aac",
                 "shasum": ""
             },
             "require": {
@@ -89,7 +89,7 @@
                 "phpcs",
                 "standards"
             ],
-            "time": "2020-01-21T21:47:15+00:00"
+            "time": "2020-02-09T23:53:48+00:00"
         }
     ],
     "aliases": [],
