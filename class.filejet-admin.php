@@ -175,7 +175,8 @@ class Filejet_Admin
     public static function load_resources()
     {
         global $hook_suffix;
-        $isSettingPage = preg_match('/settings_page_(.*)\/filejet/', $hook_suffix) !== false;
+        preg_match('/settings_page_(.*)\/filejet/', $hook_suffix, $matches);
+        $isSettingPage = !empty($matches);
 
         if (in_array(
                 $hook_suffix, apply_filters(
