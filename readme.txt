@@ -1,10 +1,10 @@
 === FileJet Pro ===
 Contributors: filejet
-Tags: image optimization, webp, smart cdn, filejet 
+Tags: image optimization, webp, convert, smart cdn, filejet 
 Requires at least: 4.0
-Tested up to: 5.2
+Tested up to: 5.8
 Requires PHP: 5.6
-Stable tag: 1.3.11
+Stable tag: 1.3.12
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -65,6 +65,10 @@ No. You won't loose any of your images after stopping the FileJet Pro plugin. We
 6. FileJet Pro - dashboard widget
 
 == Changelog ==
+
+= 1.3.12 =
+* fix do not load chart JS when not needed
+* test on newer versions of WP
 
 = 1.3.11 =
 * fix usage of FileJet PRO plugin with Theme customizer
