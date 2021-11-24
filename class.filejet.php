@@ -284,4 +284,15 @@ class Filejet
 
         return (strpos($sRequestPath, $sRestPath) === 0);
     }
+
+    /**
+     * Use for logging variables to debug.log
+     * In order to see the logs within the debug.log you need to enable Wordpress logging
+     * See https://wordpress.org/support/article/debugging-in-wordpress/
+     *
+     * @static
+     */
+    public static function log($var) {
+        error_log(print_r($var, true));
+    }
 }
