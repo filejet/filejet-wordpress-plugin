@@ -2,9 +2,9 @@
 Contributors: filejet
 Tags: image optimization, webp, convert, smart cdn, filejet 
 Requires at least: 4.0
-Tested up to: 5.8
+Tested up to: 5.9
 Requires PHP: 5.6
-Stable tag: 1.3.14
+Stable tag: 1.3.15
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -65,6 +65,9 @@ No. You won't loose any of your images after stopping the FileJet Pro plugin. We
 6. FileJet Pro - dashboard widget
 
 == Changelog ==
+
+= 1.3.14 =
+* update "tested up to" version
 
 = 1.3.13 =
 * update vendors
