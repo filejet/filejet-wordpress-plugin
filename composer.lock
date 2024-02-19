@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "09fe15a0989469932285c05fe934dec3",
+    "content-hash": "62598cdc8761a096059a048c308b620b",
     "packages": [
         {
             "name": "filejet/filejet-external-php",
@@ -12,18 +12,18 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/filejet/filejet-external-php.git",
-                "reference": "3b876646e549eaef6f12d21a331b079c2d7db532"
+                "reference": "f8fc3b3afc5cc3d2102806bfe6ed0e1cd7db8020"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/filejet/filejet-external-php/zipball/3b876646e549eaef6f12d21a331b079c2d7db532",
-                "reference": "3b876646e549eaef6f12d21a331b079c2d7db532",
+                "url": "https://api.github.com/repos/filejet/filejet-external-php/zipball/f8fc3b3afc5cc3d2102806bfe6ed0e1cd7db8020",
+                "reference": "f8fc3b3afc5cc3d2102806bfe6ed0e1cd7db8020",
                 "shasum": ""
             },
             "require": {
                 "ext-dom": "*",
                 "ext-libxml": "*",
-                "php": "^5.6"
+                "php": "^8.1"
             },
             "default-branch": true,
             "type": "library",
@@ -39,9 +39,9 @@
             "description": "Library containing functions for manipulating external files of FileJet",
             "support": {
                 "issues": "https://github.com/filejet/filejet-external-php/issues",
-                "source": "https://github.com/filejet/filejet-external-php/tree/v1.1.0"
+                "source": "https://github.com/filejet/filejet-external-php/tree/master"
             },
-            "time": "2021-11-24T18:17:34+00:00"
+            "time": "2024-02-19T12:02:05+00:00"
         }
     ],
     "packages-dev": [
@@ -50,13 +50,13 @@
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/squizlabs/PHP_CodeSniffer.git",
-                "reference": "0ed1d8c5ac325d6222396f7034d9c8e9d68a0cc9"
+                "url": "https://github.com/PHPCSStandards/PHP_CodeSniffer.git",
+                "reference": "68a8a340f83835d66eb00b81e1d50834c1c61fed"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/0ed1d8c5ac325d6222396f7034d9c8e9d68a0cc9",
-                "reference": "0ed1d8c5ac325d6222396f7034d9c8e9d68a0cc9",
+                "url": "https://api.github.com/repos/PHPCSStandards/PHP_CodeSniffer/zipball/68a8a340f83835d66eb00b81e1d50834c1c61fed",
+                "reference": "68a8a340f83835d66eb00b81e1d50834c1c61fed",
                 "shasum": ""
             },
             "require": {
@@ -66,12 +66,12 @@
                 "php": ">=5.4.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "^4.0 || ^5.0 || ^6.0 || ^7.0"
+                "phpunit/phpunit": "^4.0 || ^5.0 || ^6.0 || ^7.0 || ^8.0 || ^9.3.4"
             },
             "default-branch": true,
             "bin": [
-                "bin/phpcs",
-                "bin/phpcbf"
+                "bin/phpcbf",
+                "bin/phpcs"
             ],
             "type": "library",
             "extra": {
@@ -86,21 +86,45 @@
             "authors": [
                 {
                     "name": "Greg Sherwood",
-                    "role": "lead"
+                    "role": "Former lead"
+                },
+                {
+                    "name": "Juliette Reinders Folmer",
+                    "role": "Current lead"
+                },
+                {
+                    "name": "Contributors",
+                    "homepage": "https://github.com/PHPCSStandards/PHP_CodeSniffer/graphs/contributors"
                 }
             ],
             "description": "PHP_CodeSniffer tokenizes PHP, JavaScript and CSS files and detects violations of a defined set of coding standards.",
-            "homepage": "https://github.com/squizlabs/PHP_CodeSniffer",
+            "homepage": "https://github.com/PHPCSStandards/PHP_CodeSniffer",
             "keywords": [
                 "phpcs",
-                "standards"
+                "standards",
+                "static analysis"
             ],
             "support": {
-                "issues": "https://github.com/squizlabs/PHP_CodeSniffer/issues",
-                "source": "https://github.com/squizlabs/PHP_CodeSniffer",
-                "wiki": "https://github.com/squizlabs/PHP_CodeSniffer/wiki"
+                "issues": "https://github.com/PHPCSStandards/PHP_CodeSniffer/issues",
+                "security": "https://github.com/PHPCSStandards/PHP_CodeSniffer/security/policy",
+                "source": "https://github.com/PHPCSStandards/PHP_CodeSniffer",
+                "wiki": "https://github.com/PHPCSStandards/PHP_CodeSniffer/wiki"
             },
-            "time": "2021-11-22T22:20:58+00:00"
+            "funding": [
+                {
+                    "url": "https://github.com/PHPCSStandards",
+                    "type": "github"
+                },
+                {
+                    "url": "https://github.com/jrfnl",
+                    "type": "github"
+                },
+                {
+                    "url": "https://opencollective.com/php_codesniffer",
+                    "type": "open_collective"
+                }
+            ],
+            "time": "2024-02-18T01:57:31+00:00"
         }
     ],
     "aliases": [],
@@ -111,8 +135,8 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": "^5.6"
+        "php": "^8.1"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.1.0"
+    "plugin-api-version": "2.6.0"
 }
