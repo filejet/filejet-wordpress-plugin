@@ -93,7 +93,7 @@ class Filejet
         $config = json_decode(apply_filters('filejet_config', defined('FILEJET_CONFIG') ? constant('FILEJET_CONFIG') : get_option('filejet_config')), true);
         if (false === is_array($config)) return [];
         
-        return $config
+        return $config;
     }
 
     public static function get_mutations()
